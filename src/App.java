@@ -1,5 +1,7 @@
 import it.kibo.fp.lib.*;
 
+// TODO: toLowerCase un po' ovunque
+// TODO: aggiungere commenti ovunque
 public class App {
     public static void main(String[] args) {
         Stella sole = new Stella("Sole", 100);
@@ -15,7 +17,7 @@ public class App {
         Luna luna1 = new Luna("Luna1", 5, 6, 5);
         venere.addLuna(luna1);
         Luna luna2 = new Luna("Luna2", 3, 2, 5);
-        venere.addLuna(luna2);
+        giove.addLuna(luna2);
 
 
         System.out.println(AnsiColors.PURPLE + sistemaStellare.getCentroDiMassa() + AnsiColors.RESET);
@@ -23,6 +25,10 @@ public class App {
         
         venere.rimuoviLuna("Luna1");
         System.out.println(sistemaStellare.toString());
+
+        System.out.println(sistemaStellare.cercaCorpoCeleste("Sole"));
+
+        System.out.println(sistemaStellare.percorsoLuna("Luna2"));
 
 
     } 

@@ -25,13 +25,22 @@ public class Pianeta extends CorpoCeleste {
     return listaLune;
   }
 
+  public String getStringaListaLune() {
+    ArrayList<String> listaNomiLune = new ArrayList<String>();
+    for (Luna luna : listaLune) {
+      listaNomiLune.add(luna.getNome());
+    }
+
+    return String.join(", ", listaNomiLune);
+  }
+
   @Override
   public String toString() {
-    
+
     if (listaLune.size() > 0) {
       String stringaReturn = this.getNome() + ": ( ";
       ArrayList<String> listaNomiLune = new ArrayList<String>();
-      for(Luna luna : listaLune){
+      for (Luna luna : listaLune) {
         listaNomiLune.add(luna.getNome());
       }
       stringaReturn += String.join(", ", listaNomiLune);
@@ -40,5 +49,5 @@ public class Pianeta extends CorpoCeleste {
     }
 
     return this.getNome();
-    }
+  }
 }
