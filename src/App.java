@@ -14,9 +14,9 @@ public class App {
 
         Luna luna1 = new Luna("Luna1", 1, -1, -4);
         pianeta1.addLuna(luna1);
-        Luna luna2 = new Luna("Luna2", 2, 0, 0);
+        Luna luna2 = new Luna("Luna2", 2, 2, 3);
         pianeta2.addLuna(luna2);
-        Luna luna3 = new Luna("Luna3", 1, 2, 3);
+        Luna luna3 = new Luna("Luna3", 1, 4, 4);
         pianeta2.addLuna(luna3);
 
 

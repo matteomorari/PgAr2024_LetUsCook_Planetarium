@@ -212,7 +212,7 @@ public class SistemaStellare {
   public String getPossibiliCollisioni() {
     ArrayList<String> collisioni = new ArrayList<String>();
 
-    for (int i = 0; i < listaPianeti.size() - 1; i++) {
+    for (int i = 0; i < listaPianeti.size(); i++) {
       // per ogni i-esimo pianeta controlliamo se ha la stessa distanza dalla stella
       // degli j-esimi pianeti
       for (int j = i + 1; j < listaPianeti.size(); j++) {
@@ -250,14 +250,13 @@ public class SistemaStellare {
         // due lune di pianeti diversi collidono se e solo se la distanza dei due
         // pianeti è minore o uguale della somma della somma delle distanza di ciascuna
         // luna dal proprio pianeta.
-        for (int k = i + 1; j < listaPianeti.size() - 1; k++) {
+        for (int k = i + 1; k < listaPianeti.size(); k++) {
           for (Luna lunaK : listaPianeti.get(k).getListaLune()) {
-            double distanzaPianeti = this.calcolaDistanza(this.getPianetaDiLuna(listaLunePianetaI.get(i)),
+            double distanzaPianeti = this.calcolaDistanza(this.getPianetaDiLuna(listaLunePianetaI.get(j)),
                 this.getPianetaDiLuna(lunaK));
-            double distanzaLunaI_PianetaI = this.calcolaDistanza(listaPianeti.get(i), listaLunePianetaI.get(j));
             double distanzaLunaK_PianetaK = this.calcolaDistanza(listaPianeti.get(k), lunaK);
-            if (distanzaPianeti <= distanzaLunaI_PianetaI + distanzaLunaK_PianetaK) {
-              collisioni.add(listaLunePianetaI.get(j) + "-" + lunaK);
+            if (distanzaPianeti >= (distanzaLunaJ_PianetaI + distanzaLunaK_PianetaK)) {
+              collisioni.add(listaLunePianetaI.get(j).getNome() + "-" + lunaK.getNome());
             }
           }
         }
