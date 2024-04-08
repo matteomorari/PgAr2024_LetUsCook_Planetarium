@@ -1,6 +1,11 @@
 import java.util.ArrayList;
-import java.util.Vector;
 
+/**
+ * Represents a stellar system that contains a star and a list of planets.
+ */
+/**
+ * Represents a star system.
+ */
 public class SistemaStellare {
   private Stella stella;
   private ArrayList<Pianeta> listaPianeti = new ArrayList<Pianeta>();
@@ -9,10 +14,155 @@ public class SistemaStellare {
     this.stella = stella;
   }
 
+  /**
+   * Checks if a planet with the given name exists in the star system.
+   *
+   * @param nome the name of the planet to check
+   * @return true if a planet with the given name exists, false otherwise
+   */
+  public boolean pianetaEsistente(String nome) {
+    for (Pianeta pianeta : listaPianeti) {
+      if (pianeta.getId().equalsIgnoreCase(nome)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Checks if a moon with the given name exists in the star system.
+   * 
+   * @param nome the name of the moon to check
+   * @return true if a moon with the given name exists, false otherwise
+   */
+  public boolean lunaEsistente(String nome) {
+    for (Pianeta pianeta : listaPianeti) {
+      for (Luna luna : pianeta.getListaLune()) {
+        if (luna.getId().equalsIgnoreCase(nome)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Checks if a celestial body with the given name exists in the star system.
+   *
+   * @param nome the name of the celestial body to check
+   * @return true if a celestial body with the given name exists, false otherwise
+   */
+  public boolean corpoCelesteEsistente(String nome) {
+
+    if (this.stella.getId().equalsIgnoreCase(nome) || this.pianetaEsistente(nome) || this.lunaEsistente(nome)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns the list of planets in the stellar system.
+   *
+   * @return the list of planets
+   */
+  public ArrayList<Pianeta> getListaPianeti() {
+    return listaPianeti;
+  }
+
+  /**
+   * Represents a planet in the solar system.
+   */
+  public Pianeta getPianetaByName(String nome) {
+    Pianeta pianeta = null;
+    for (Pianeta pianetaCorrente : listaPianeti) {
+      if (nome.equalsIgnoreCase(pianetaCorrente.getId())) {
+        pianeta = pianetaCorrente;
+      }
+    }
+
+    return pianeta;
+  }
+
+  /**
+   * Adds a planet to the list of planets in the stellar system.
+   *
+   * @param pianeta the planet to be added
+   */
   public void addPianeta(Pianeta pianeta) {
     listaPianeti.add(pianeta);
   }
 
+  /**
+   * Removes a planet from the list of planets in the star system.
+   * 
+   * @param nomePianeta the name of the planet to be removed
+   */
+  public void rimuoviPianeta(String nomePianeta) {
+    for (int i = 0; i < listaPianeti.size(); i++) {
+      if (nomePianeta.equalsIgnoreCase(listaPianeti.get(i).getId())) {
+        listaPianeti.remove(i);
+        break;
+      }
+    }
+  }
+
+  /**
+   * Represents a moon in the planetary system.
+   */
+  public Luna getLunaByName(String nome) {
+    Luna luna = null;
+    for (Pianeta pianeta : listaPianeti) {
+      for (Luna lunaCorrente : pianeta.getListaLune()) {
+        if (lunaCorrente.getId().equalsIgnoreCase(nome)) {
+          luna = lunaCorrente;
+        }
+      }
+    }
+
+    return luna;
+  }
+
+  /**
+   * Represents a celestial body in the solar system.
+   */
+  public CorpoCeleste getCorpoCelesteByName(String nome) {
+    if (nome.equalsIgnoreCase(this.stella.getId())) {
+      return this.stella;
+    } else {
+      if (this.pianetaEsistente(nome)) {
+        return this.getPianetaByName(nome);
+      } else {
+        return this.getLunaByName(nome);
+      }
+    }
+  }
+
+  /**
+   * Returns the stella object associated with this SistemaStellare.
+   *
+   * @return the stella object associated with this SistemaStellare
+   */
+  public Stella getStella() {
+    return this.stella;
+  };
+
+  /**
+   * Replaces the current star with a new star in the stellar system.
+   * 
+   * @param nuovaStella the new star to be set in the stellar system
+   */
+  public void replaceStella(Stella nuovaStella) {
+    this.stella = nuovaStella;
+  }
+
+  /**
+   * Returns the center of mass of the stellar system.
+   *
+   * @return a string representation of the center of mass position in the format:
+   *         "Il centro di massa è in posizione: (x; y)"
+   */
   public String getCentroDiMassa() {
     double massaTotale = 0;
     double posizioneXPesata = 0;
@@ -22,43 +172,36 @@ public class SistemaStellare {
     String stringaReturn;
 
     massaTotale += stella.getMassa();
-    posizioneXPesata += stella.getMassa() * stella.getPosizioneX();
-    posizioneYPesata += stella.getMassa() * stella.getPosizioneY();
+    posizioneXPesata += stella.getMassa() * stella.getPosizione().get("x");
+    posizioneYPesata += stella.getMassa() * stella.getPosizione().get("y");
 
     for (Pianeta pianeta : listaPianeti) {
       massaTotale += pianeta.getMassa();
-      posizioneXPesata += pianeta.getMassa() * pianeta.getPosizioneX();
-      posizioneYPesata += pianeta.getMassa() * pianeta.getPosizioneY();
+      posizioneXPesata += pianeta.getMassa() * pianeta.getPosizione().get("x");
+      posizioneYPesata += pianeta.getMassa() * pianeta.getPosizione().get("y");
       for (Luna luna : pianeta.getListaLune()) {
         massaTotale += luna.getMassa();
-        posizioneXPesata += luna.getMassa() * luna.getPosizioneX();
-        posizioneYPesata += luna.getMassa() * luna.getPosizioneY();
+        posizioneXPesata += luna.getMassa() * luna.getPosizione().get("x");
+        posizioneYPesata += luna.getMassa() * luna.getPosizione().get("y");
       }
     }
 
     centroMassaX = posizioneXPesata / massaTotale;
     centroMassaY = posizioneYPesata / massaTotale;
 
-    // TODO: rendere più carina la stringa e decidere eventualmente di ritornare
-    // classe punto???
+    // TODO: usare DecimalFormat: decimalFormat = new DecimalFormat("#.##");
     stringaReturn = String.format("Il centro di massa è in posizione: (%.2f; %.2f)", centroMassaX, centroMassaY);
 
     return stringaReturn;
   }
 
-  public void rimuoviPianeta(String nomePianeta) {
-    for (int i = 0; i < listaPianeti.size(); i++) {
-      if (nomePianeta.equals(listaPianeti.get(i).getNome())) {
-        listaPianeti.remove(i);
-        break;
-      }
-    }
-  }
-
-  public ArrayList<Pianeta> getListaPianeti() {
-    return listaPianeti;
-  }
-
+  /**
+   * Returns a string representation of the SistemaStellare object.
+   * The string representation includes the name of the star and a list of planet
+   * names.
+   *
+   * @return a string representation of the SistemaStellare object
+   */
   @Override
   public String toString() {
     ArrayList<String> listaNomiPianeti = new ArrayList<String>();
@@ -75,55 +218,75 @@ public class SistemaStellare {
         "}";
   }
 
-  public boolean corpoCelestePresente(String nome) {
-    if (nome.equals(this.stella.getNome())) {
-      return true;
-    }
-    for (Pianeta pianeta : listaPianeti) {
-      if (nome.equals(pianeta.getNome())) {
-        return true;
-      }
-      for (Luna luna : pianeta.getListaLune()) {
-        if (nome.equals(luna.getNome())) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+  // TODO: usare metodo calcolo rotta
+  /**
+   * Returns the path of the given moon within the star system.
+   *
+   * @param luna The moon for which to find the path.
+   * @return The path of the moon within the star system, in the format:
+   *         [star name] > [planet name] > [moon name].
+   *         If the moon is not found within any planet, returns "Errore".
+   */
+  public String percorsoLuna(Luna luna) {
+    return this.stella.getNome() + " > " + this.getPianetaDiLuna(luna).getNome() + " > " + luna.getNome();
   }
 
-  public Pianeta getPianeta(String nome) {
-    for (Pianeta pianeta : listaPianeti) {
-      if (nome.equals(pianeta.getNome())) {
-        return pianeta;
+  /**
+   * Returns the planet that contains the given moon.
+   *
+   * @param _luna The moon to find the planet for.
+   * @return The planet that contains the given moon.
+   */
+  public Pianeta getPianetaDiLuna(CorpoCeleste _luna) {
+    Luna luna = (Luna) _luna; // TODO: modo migliore per farlo?
+    String nomePianeta = this.percorsoLuna(luna).split(" > ")[1];
+    return this.getPianetaByName(nomePianeta);
+  }
+
+  // TODO: upcasting possibile in qualche modo
+  //TODO: invertire uso con percorsoLuna
+  /**
+   * Returns the planet that contains the given moon.
+   *
+   * @param luna The moon to find the planet for.
+   * @return The planet that contains the given moon.
+   */
+  public Pianeta getPianetaDiLuna(Luna luna) {
+    Pianeta pianeta = null;
+    for (Pianeta pianetaCorrente : listaPianeti) {
+      if (pianetaCorrente.getStringaListaLune().indexOf(luna.getNome()) != -1) {
+        pianeta = pianetaCorrente;
       }
     }
-
-    return listaPianeti.get(0); // TODO: to fix
+    return pianeta;
   }
 
-  public String percorsoLuna(String nomeLuna) {
-    for (Pianeta pianeta : listaPianeti) {
-      if (pianeta.getStringaListaLune().indexOf(nomeLuna) != -1) {
-        return this.stella.getNome() + " > " + pianeta.getNome() + " > " + nomeLuna;
-      }
-    }
-    return "Errore"; // TODO: to fix
-  }
-
-  public Pianeta getPianetaDiLuna(CorpoCeleste luna) {
-    String nomePianeta = this.percorsoLuna(luna.getNome()).split(" > ")[1];
-    return this.getPianeta(nomePianeta);
-  }
-
+  /**
+   * Calculates the distance between two celestial bodies.
+   * 
+   * @param corpo1 the first celestial body
+   * @param corpo2 the second celestial body
+   * @return the distance between the two celestial bodies
+   */
   // TODO: to test
   public double calcolaDistanza(CorpoCeleste corpo1, CorpoCeleste corpo2) {
-    double deltaX = corpo1.getPosizioneX() - corpo2.getPosizioneX();
-    double deltaY = corpo1.getPosizioneY() - corpo2.getPosizioneY();
+    double deltaX = corpo1.getPosizione().get("x") - corpo2.getPosizione().get("x");
+    double deltaY = corpo1.getPosizione().get("y") - corpo2.getPosizione().get("y");
     return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
   }
 
+  /**
+   * Calculates the route between two celestial bodies and returns the route as a
+   * string.
+   * The route is determined based on the type of celestial bodies (Planet, Moon,
+   * or Star) and their relationships.
+   * The distance between each celestial body in the route is also calculated.
+   *
+   * @param partenza The starting celestial body.
+   * @param arrivo   The destination celestial body.
+   * @return A string representation of the route between the two celestial
+   *         bodies, including the total distance.
+   */
   // TODO: eventualmente da migliorare con altre metodi di supporto
   public String calcolaRotta(CorpoCeleste partenza, CorpoCeleste arrivo) {
     ArrayList<CorpoCeleste> listaPercorso = new ArrayList<CorpoCeleste>();
@@ -209,6 +372,12 @@ public class SistemaStellare {
         "Percorso: %s, con distanza di: %.2f", String.join(" > ", listaNomi), distanzaTotale);
   }
 
+  /**
+   * Returns a string representation of the possible collisions in the stellar
+   * system.
+   * 
+   * @return A string representing the possible collisions.
+   */
   public String getPossibiliCollisioni() {
     ArrayList<String> collisioni = new ArrayList<String>();
 
@@ -232,7 +401,7 @@ public class SistemaStellare {
           double distanzaJ = this.calcolaDistanza(listaPianeti.get(i), listaLunePianetaI.get(j));
           double distanzaK = this.calcolaDistanza(listaPianeti.get(i), listaLunePianetaI.get(k));
           if (MyMath.doubleUguali(distanzaJ, distanzaK)) {
-            collisioni.add(listaLunePianetaI.get(i).getNome() + "-" + listaLunePianetaI.get(j).getNome());
+            collisioni.add(listaLunePianetaI.get(j).getNome() + "-" + listaLunePianetaI.get(k).getNome());
           }
         }
 
