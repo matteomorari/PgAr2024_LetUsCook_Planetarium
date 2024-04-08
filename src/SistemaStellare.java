@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class SistemaStellare {
   private Stella stella;
@@ -74,126 +75,201 @@ public class SistemaStellare {
         "}";
   }
 
-  public String cercaCorpoCeleste(String nome) {
+  public boolean corpoCelestePresente(String nome) {
     if (nome.equals(this.stella.getNome())) {
-      return "Il corpo celeste cercato è la stella";
+      return true;
     }
     for (Pianeta pianeta : listaPianeti) {
       if (nome.equals(pianeta.getNome())) {
-        return "Il corpo celeste cercato è un pianeta";
+        return true;
       }
       for (Luna luna : pianeta.getListaLune()) {
         if (nome.equals(luna.getNome())) {
-          return "Il corpo celeste cercato è un una luna che gira intorno a " + pianeta.getNome();
+          return true;
         }
       }
     }
 
-    return "Non è stato trovato nessun corpo celeste con questo nome";
+    return false;
+  }
+
+  public Pianeta getPianeta(String nome) {
+    for (Pianeta pianeta : listaPianeti) {
+      if (nome.equals(pianeta.getNome())) {
+        return pianeta;
+      }
+    }
+
+    return listaPianeti.get(0); // TODO: to fix
   }
 
   public String percorsoLuna(String nomeLuna) {
     for (Pianeta pianeta : listaPianeti) {
       if (pianeta.getStringaListaLune().indexOf(nomeLuna) != -1) {
-        return "Il percorso per raggiungere la luna \"" + nomeLuna + "\" è: " + this.stella.getNome() + " > "
-            + pianeta.getNome() + " > " + nomeLuna;
+        return this.stella.getNome() + " > " + pianeta.getNome() + " > " + nomeLuna;
       }
     }
-
-    return "Non esiste nessuna luna con questo nome";
+    return "Errore"; // TODO: to fix
   }
 
-  // TODO: convertiore paramettro in luna?
-  public String getPianetaDiLuna(CorpoCeleste luna) {
-    return this.percorsoLuna(luna.getNome()).split(" > ")[1];
+  public Pianeta getPianetaDiLuna(CorpoCeleste luna) {
+    String nomePianeta = this.percorsoLuna(luna.getNome()).split(" > ")[1];
+    return this.getPianeta(nomePianeta);
   }
 
   // TODO: to test
   public double calcolaDistanza(CorpoCeleste corpo1, CorpoCeleste corpo2) {
-    return Math.sqrt(Math.pow(corpo1.getPosizioneX() - corpo2.getPosizioneX(), 2) - Math.pow(
-        corpo1.getPosizioneY() - corpo2.getPosizioneY(), 2));
+    double deltaX = corpo1.getPosizioneX() - corpo2.getPosizioneX();
+    double deltaY = corpo1.getPosizioneY() - corpo2.getPosizioneY();
+    return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
   }
 
-  // TODO: creare array to join dopo
-  //! TODO: da finire
-  // public String calcolaRotta(CorpoCeleste partenza, CorpoCeleste arrivo) {
-  //   ArrayList<CorpoCeleste> listaPercorso = new ArrayList<CorpoCeleste>();
+  // TODO: eventualmente da migliorare con altre metodi di supporto
+  public String calcolaRotta(CorpoCeleste partenza, CorpoCeleste arrivo) {
+    ArrayList<CorpoCeleste> listaPercorso = new ArrayList<CorpoCeleste>();
+    double distanzaTotale = 0;
 
-  //   if (partenza.equals(arrivo)) {
-  //     // se sono lo stesso corpo celeste
-  //     return "Bro un po' più di attenzione, hai inserito lo stesso corpo celeste";
-  //   } else if (partenza instanceof Pianeta && arrivo instanceof Pianeta) {
-  //     // entrambi di tipo Pianeta
-  //     listaPercorso.add(partenza);
-  //     listaPercorso.add(this.stella);
-  //     listaPercorso.add(arrivo);
-  //   } else if (partenza instanceof Luna && arrivo instanceof Luna) {
-  //     // entrambi di tipo Luna
-  //     String pianetaPartenza = this.getPianetaDiLuna(partenza);
-  //     String pianetaArrivo = this.getPianetaDiLuna(arrivo);
+    if (partenza.equals(arrivo)) {
+      // se sono lo stesso corpo celeste
+      return "Bro un po' più di attenzione, hai inserito lo stesso corpo celeste";
+    } else if (partenza instanceof Pianeta && arrivo instanceof Pianeta) {
+      // entrambi di tipo Pianeta
+      listaPercorso.add(partenza);
+      listaPercorso.add(this.stella);
+      listaPercorso.add(arrivo);
+    } else if (partenza instanceof Luna && arrivo instanceof Luna) {
+      // entrambi di tipo Luna
+      Pianeta pianetaPartenza = this.getPianetaDiLuna(partenza);
+      Pianeta pianetaArrivo = this.getPianetaDiLuna(arrivo);
 
-  //     // se appartengono allo stesso pianeta
-  //     if (pianetaPartenza.equals(pianetaArrivo)) {
-  //       listaPercorso.add(partenza);
-  //       listaPercorso.add(pianetaPartenza);
-  //       listaPercorso.add(arrivo);
-  //       // return partenza.getNome() + " > " + pianetaPartenza + " > " + arrivo.getNome();
-  //     } else {
-  //       listaPercorso.add(partenza);
-  //       listaPercorso.add(pianetaPartenza);
-  //       listaPercorso.add(this.stella);
-  //       listaPercorso.add(pianetaArrivo);
-  //       listaPercorso.add(arrivo);
-  //       // return partenza.getNome() + " > " + pianetaPartenza + " > " + this.stella.getNome() + " > " + pianetaArrivo
-  //       //     + " > " + arrivo.getNome();
-  //     }
-  //   } else if (partenza instanceof Luna) {
-  //     if (arrivo instanceof Pianeta) {
-  //       listaPercorso.add(partenza);
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       return partenza.getNome() + " > " + this.getPianetaDiLuna(arrivo) + " > " + this.stella.getNome() + " > "
-  //           + arrivo.getNome();
-  //     } else {
-  //       // se arrivo è una stella
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       return partenza.getNome() + " > " + this.getPianetaDiLuna(arrivo) + " > " + this.stella.getNome();
-  //     }
-  //   } else if (partenza instanceof Pianeta) {
-  //     if (arrivo instanceof Luna) {
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       return partenza.getNome() + " > " + this.getPianetaDiLuna(arrivo) + " > " + this.percorsoLuna(arrivo.getNome());
-  //     } else {
-  //       // se arrivo è una stella
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       return partenza.getNome() + " > " + this.stella.getNome();
-  //     }
-  //   } else {
-  //     // se partenza è una stella
+      // se appartengono allo stesso pianeta
+      if (pianetaPartenza.equals(pianetaArrivo)) {
+        listaPercorso.add(partenza);
+        listaPercorso.add(pianetaPartenza);
+        listaPercorso.add(arrivo);
+      } else {
+        // se le lune appartengono a pianeti diversi
+        listaPercorso.add(partenza);
+        listaPercorso.add(pianetaPartenza);
+        listaPercorso.add(this.stella);
+        listaPercorso.add(pianetaArrivo);
+        listaPercorso.add(arrivo);
+      }
+    } else if (partenza instanceof Luna) {
+      if (arrivo instanceof Pianeta) {
+        listaPercorso.add(partenza);
+        listaPercorso.add(this.getPianetaDiLuna(partenza));
+        listaPercorso.add(this.stella);
+        listaPercorso.add(arrivo);
+      } else {
+        // se arrivo è una stella
+        listaPercorso.add(partenza);
+        listaPercorso.add(this.getPianetaDiLuna(partenza));
+        listaPercorso.add(this.stella);
+      }
+    } else if (partenza instanceof Pianeta) {
+      if (arrivo instanceof Luna && partenza.equals(arrivo)) {
+        listaPercorso.add(partenza);
+        listaPercorso.add(this.getPianetaDiLuna(partenza));
+        listaPercorso.add(arrivo);
+      } else if (arrivo instanceof Luna) {
+        listaPercorso.add(partenza);
+        listaPercorso.add(this.stella);
+        listaPercorso.add(this.getPianetaDiLuna(arrivo));
+        listaPercorso.add(arrivo);
+      } else {
+        // se arrivo è una stella
+        listaPercorso.add(partenza);
+        listaPercorso.add(this.stella);
+      }
+    } else {
+      // se partenza è una stella
+      if (arrivo instanceof Luna) {
+        listaPercorso.add(this.stella);
+        listaPercorso.add(this.getPianetaDiLuna(arrivo));
+        listaPercorso.add(arrivo);
+      } else {
+        // se arrivo è di tipo Pianeta
+        listaPercorso.add(this.stella);
+        listaPercorso.add(arrivo);
+      }
+    }
 
-  //     if (arrivo instanceof Luna) {
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       return this.percorsoLuna(arrivo.getNome());
-  //     } else {
-  //       // se arrivo è di tipo Pianeta
-  //       listaPercorso.add();
-  //       listaPercorso.add();
-  //       return partenza.getNome() + " > " + arrivo.getNome();
-  //     }
-  //   }
+    ArrayList<String> listaNomi = new ArrayList<String>();
+    for (CorpoCeleste corpoCeleste : listaPercorso) {
+      listaNomi.add(corpoCeleste.getNome());
+    }
 
-  //   // calcoliamo distanza totale da percorre
+    // calcoliamo distanza totale da percorre
+    for (int i = 0; i < listaPercorso.size() - 1; i++) {
+      distanzaTotale += this.calcolaDistanza(listaPercorso.get(i), listaPercorso.get(i + 1));
+    }
 
-  // }
+    return String.format(
+        "Percorso: %s, con distanza di: %.2f", String.join(" > ", listaNomi), distanzaTotale);
+  }
+
+  public String getPossibiliCollisioni() {
+    ArrayList<String> collisioni = new ArrayList<String>();
+
+    for (int i = 0; i < listaPianeti.size() - 1; i++) {
+      // per ogni i-esimo pianeta controlliamo se ha la stessa distanza dalla stella
+      // degli j-esimi pianeti
+      for (int j = i + 1; j < listaPianeti.size(); j++) {
+        double distanzaI = this.calcolaDistanza(this.stella, this.listaPianeti.get(i));
+        double distanzaJ = this.calcolaDistanza(this.stella, this.listaPianeti.get(j));
+        if (MyMath.doubleUguali(distanzaI, distanzaJ)) {
+          collisioni.add(listaPianeti.get(i).getNome() + "-" + listaPianeti.get(j).getNome());
+        }
+      }
+
+      ArrayList<Luna> listaLunePianetaI = this.listaPianeti.get(i).getListaLune(); // lista luna di ogni i-esimo pianeta
+
+      // iteriamo ogni luna dell'i-esimo pianeta
+      for (int j = 0; j < listaLunePianetaI.size(); j++) {
+        // due lune dello stesso pianeta collidono se e solo se hanno lo stesso raggio
+        for (int k = j + 1; k < listaLunePianetaI.size(); k++) {
+          double distanzaJ = this.calcolaDistanza(listaPianeti.get(i), listaLunePianetaI.get(j));
+          double distanzaK = this.calcolaDistanza(listaPianeti.get(i), listaLunePianetaI.get(k));
+          if (MyMath.doubleUguali(distanzaJ, distanzaK)) {
+            collisioni.add(listaLunePianetaI.get(i).getNome() + "-" + listaLunePianetaI.get(j).getNome());
+          }
+        }
+
+        // luna collide con stella se e solo se distanza luna-pianeta == distanza
+        // pianeta-stella
+        double distanzaLunaJ_PianetaI = this.calcolaDistanza(listaLunePianetaI.get(j), listaPianeti.get(i));
+        double distanzaPianetaI_Stella = this.calcolaDistanza(listaPianeti.get(i), stella);
+        if (MyMath.doubleUguali(distanzaLunaJ_PianetaI, distanzaPianetaI_Stella)) {
+          ArrayList<CorpoCeleste> copioCorpiCollidenti = new ArrayList<CorpoCeleste>();
+          copioCorpiCollidenti.add(listaLunePianetaI.get(j));
+          copioCorpiCollidenti.add(stella);
+          collisioni.add(listaLunePianetaI.get(j).getNome() + "-" + stella.getNome());
+        }
+
+        // due lune di pianeti diversi collidono se e solo se la distanza dei due
+        // pianeti è minore o uguale della somma della somma delle distanza di ciascuna
+        // luna dal proprio pianeta.
+        for (int k = i + 1; j < listaPianeti.size() - 1; k++) {
+          for (Luna lunaK : listaPianeti.get(k).getListaLune()) {
+            double distanzaPianeti = this.calcolaDistanza(this.getPianetaDiLuna(listaLunePianetaI.get(i)),
+                this.getPianetaDiLuna(lunaK));
+            double distanzaLunaI_PianetaI = this.calcolaDistanza(listaPianeti.get(i), listaLunePianetaI.get(j));
+            double distanzaLunaK_PianetaK = this.calcolaDistanza(listaPianeti.get(k), lunaK);
+            if (distanzaPianeti <= distanzaLunaI_PianetaI + distanzaLunaK_PianetaK) {
+              collisioni.add(listaLunePianetaI.get(j) + "-" + lunaK);
+            }
+          }
+        }
+      }
+
+    }
+
+    if (collisioni.size() == 0) {
+      return "Non ci sono collisioni.";
+    } else {
+      return "Le possibili collisioni sono: " + String.join(", ", collisioni);
+    }
+  }
 
 }
