@@ -142,26 +142,6 @@ public class SistemaStellare {
   }
 
   /**
-   * Restituisce l'oggetto Stella associato a questo sistema stellare.
-   *
-   * @return l'oggetto Stella associato a questo sistema stellare
-   */
-  // TODO: metodo mai utilizzato
-  public Stella getStella() {
-    return this.stella;
-  };
-
-  /**
-   * Sostituisce la stella corrente con una nuova stella nel sistema stellare.
-   *
-   * @param nuovaStella La nuova stella
-   */
-  // TODO: metodo mai utilizzato
-  public void replaceStella(Stella nuovaStella) {
-    this.stella = nuovaStella;
-  }
-
-  /**
    * Restituisce il centro della massa del sistema stellare.
    *
    * @return Una rappresentazione di stringa del centro della posizione di massa

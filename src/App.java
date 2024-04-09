@@ -1,6 +1,5 @@
 import it.kibo.fp.lib.*;
 
-//TODO: controlare che ci siano tutte le richieste della consegna
 /**
  * La classe principale dell'applicazione del planetario.
  * Questa classe fornisce vari metodi per interagire con un sistema stellare.
@@ -8,18 +7,24 @@ import it.kibo.fp.lib.*;
 public class App {
 
   private static final String SCEGLI_OPZIONE = "SCEGLI UNA OPZIONE";
-  private static final String VALORE_DISTANZA = "> La distanza vale %.2f";
-  private static final String PIANETA_LUNA_CERCATA = "> Il pianeta della luna cercata è: ";
-  private static final String LUNA_ELIMINATA = "> Luna eliminata definitivamente. o7";
-  private static final String PIANETA_ELIMINATO = "> Pianeta eliminato definitivamente. o7";
-  private static final String LUNA_AGGIUNTA_CORRETTAMENTE = "> Luna aggiunta correttamente.";
-  private static final String PIANETA_AGGIUNTO_CORRETTAMENTE = "> Pianeta aggiunto correttamente.";
+  private static final String VALORE_DISTANZA = AnsiColors.GREEN + "> La distanza vale %.2f" + AnsiColors.RESET;
+  private static final String PIANETA_LUNA_CERCATA = AnsiColors.GREEN + "> Il pianeta della luna cercata è: %s"
+      + AnsiColors.RESET;
+  private static final String LUNA_ELIMINATA = AnsiColors.GREEN + "> Luna eliminata definitivamente. o7"
+      + AnsiColors.RESET;
+  private static final String PIANETA_ELIMINATO = AnsiColors.GREEN + "> Pianeta eliminato definitivamente. o7"
+      + AnsiColors.RESET;
+  private static final String LUNA_AGGIUNTA_CORRETTAMENTE = AnsiColors.GREEN + "> Luna aggiunta correttamente."
+      + AnsiColors.RESET;
+  private static final String PIANETA_AGGIUNTO_CORRETTAMENTE = AnsiColors.GREEN + "> Pianeta aggiunto correttamente."
+      + AnsiColors.RESET;
   private static final String INSERISCI_MASSA_STELLA = "Inserisci massa della stella: ";
   private static final String INSERISCI_NOME_STELLA = "Inserisci il nome della stella: ";
   private static final String CREAZIONE_STELLA = "Per iniziare è necessario inserire la stella del sistema solare: ";
   private static final String BENVENUTO = "BENVENUTO NEL PROGRAMMA PER CENSIRE UN SISTEMA SOLARE VOLUTO DAL CONSIGLIO INTERGALATTICO";
-  private static final String CORPO_CELESTE_NON_ESISTE = "> Corpo celeste non esiste";
-  private static final String CORPO_CELESTE_ESISTE = "> Corpo celeste esiste";
+  private static final String CORPO_CELESTE_NON_ESISTE = AnsiColors.GREEN
+      + "> Corpo celeste non esiste" + AnsiColors.RESET;
+  private static final String CORPO_CELESTE_ESISTE = AnsiColors.GREEN + "> Corpo celeste esiste" + AnsiColors.RESET;
   private static final String INSERISCI_NOME_CORPO_CELESTI_RICERCATO = "Inserisci nome corpo celesti che ricerchi: ";
   private static final String INSERISCI_ORDINATA_POSIZIONE_LUNA = "Inserisci ordinata posizione luna: ";
   private static final String INSERISCI_ASCISSA_POSIZIONE_LUNA = "Inserisci ascissa posizione luna: ";
@@ -157,7 +162,7 @@ public class App {
    */
   public static String visualizzaLuneDiPianeta(SistemaStellare sistemaStellare) {
     Pianeta pianeta = cercaPianeta(sistemaStellare);
-    return pianeta.getStringaListaLune();
+    return "> " + pianeta.getStringaListaLune();
   }
 
   /**
@@ -165,7 +170,7 @@ public class App {
    */
   public static String visualizzaPercorsoLuna(SistemaStellare sistemaStellare) {
     Luna luna = cercaLuna(sistemaStellare);
-    return sistemaStellare.percorsoLuna(luna);
+    return AnsiColors.GREEN + "> " + sistemaStellare.percorsoLuna(luna) + AnsiColors.RESET;
   }
 
   /**
@@ -175,7 +180,7 @@ public class App {
   public static String visualizzaRotta(SistemaStellare sistemaStellare) {
     CorpoCeleste partenza = cercaCorpoCeleste(sistemaStellare);
     CorpoCeleste arrivo = cercaCorpoCeleste(sistemaStellare);
-    return sistemaStellare.calcolaRotta(partenza, arrivo);
+    return AnsiColors.GREEN + "> " + sistemaStellare.calcolaRotta(partenza, arrivo) + AnsiColors.RESET;
   }
 
   /**
@@ -191,7 +196,7 @@ public class App {
    * Restituisce una rappresentazione di stringa delle possibili collisioni
    */
   public static String visualizzaCollisioni(SistemaStellare sistemaStellare) {
-    return sistemaStellare.getPossibiliCollisioni();
+    return AnsiColors.GREEN + "> " + sistemaStellare.getPossibiliCollisioni() + AnsiColors.RESET;
   }
 
   /**
@@ -208,8 +213,6 @@ public class App {
     Stella stella = new Stella(nomeStella, massaStella);
     SistemaStellare sistemaStellare = new SistemaStellare(stella);
 
-    // TODO: possibili cose da aggiungere (ma anche no): modificare massa,
-    // posizione, nome di un corpo celeste
     String[] opzioniMenu = {
         "Aggiungi pianeta",
         "Aggiungi luna",
@@ -230,8 +233,6 @@ public class App {
     do {
       opzioneScelta = menu.choose();
       switch (opzioneScelta) {
-        // TODO: cambiare colore ai System.out.println
-        // TODO: da testare bene
         case 1:
           // "Aggiungi pianeta"
           aggiungiPianeta(sistemaStellare);
@@ -254,32 +255,32 @@ public class App {
           break;
         case 5:
           // "Calcola centro di massa"
-          System.out.println("> " + sistemaStellare.getCentroDiMassa());
+          System.out.println(AnsiColors.GREEN + "> " + sistemaStellare.getCentroDiMassa() + AnsiColors.RESET);
           break;
         case 6:
           // "Esiste corpo celeste con un certo nome"
-          System.out.println("> " + corpoCelesteEsistente(sistemaStellare));
+          System.out.println(corpoCelesteEsistente(sistemaStellare));
           break;
         case 7:
           // "Pianeta di una luna"
           Pianeta pianeta = cercaPianetaDiLuna(sistemaStellare);
-          System.out.println(PIANETA_LUNA_CERCATA + pianeta.getNome());
+          System.out.println(String.format(PIANETA_LUNA_CERCATA, pianeta.getNome()));
           break;
         case 8:
           // "Lune che girano intorno ad un pianeta"
-          System.out.println("> " + visualizzaLuneDiPianeta(sistemaStellare));
+          System.out.println(visualizzaLuneDiPianeta(sistemaStellare));
           break;
         case 9:
           // "Elenco corpi celesti"
-          System.out.println("> " + sistemaStellare.toString());
+          System.out.println(AnsiColors.GREEN + "> " + sistemaStellare.toString() + AnsiColors.RESET);
           break;
         case 10:
           // "Percorso luna"
-          System.out.println("> " + visualizzaPercorsoLuna(sistemaStellare));
+          System.out.println(visualizzaPercorsoLuna(sistemaStellare));
           break;
         case 11:
           // "Rotta tra due corpi celesti"
-          System.out.println("> " + visualizzaRotta(sistemaStellare));
+          System.out.println(visualizzaRotta(sistemaStellare));
           break;
         case 12:
           // "Distanza tra due corpi celesti"
@@ -287,7 +288,7 @@ public class App {
           break;
         case 13:
           // "Calcola possibili collisioni"
-          System.out.println("> " + visualizzaCollisioni(sistemaStellare));
+          System.out.println(visualizzaCollisioni(sistemaStellare));
           break;
         default:
           // opzioneScelta == 0
