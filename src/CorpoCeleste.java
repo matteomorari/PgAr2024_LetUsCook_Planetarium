@@ -2,7 +2,8 @@ import java.util.HashMap;
 
 /**
  * The CorpoCeleste class represents a celestial body.
- * It contains information about the name, mass, and position of the celestial body.
+ * It contains information about the name, mass, and position of the celestial
+ * body.
  */
 public class CorpoCeleste {
 
@@ -15,8 +16,8 @@ public class CorpoCeleste {
   /**
    * Constructs a CorpoCeleste object with the specified name, mass, and position.
    * 
-   * @param nome The name of the celestial body.
-   * @param massa The mass of the celestial body.
+   * @param nome       The name of the celestial body.
+   * @param massa      The mass of the celestial body.
    * @param posizioneX The x-coordinate of the celestial body's position.
    * @param posizioneY The y-coordinate of the celestial body's position.
    */
@@ -95,7 +96,6 @@ public class CorpoCeleste {
 
   @Override
   public boolean equals(Object obj) {
-    // TODO Auto-generated method stub
     return super.equals(obj);
   }
 

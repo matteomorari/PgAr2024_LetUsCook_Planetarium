@@ -15,7 +15,8 @@ public class App {
   public static Luna cercaLuna(SistemaStellare sistemaStellare) {
     String nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
     while (!sistemaStellare.lunaEsistente(nomeLuna)) {
-      System.out.println("ERRORE! Non è presente nessuna luna con questo nome."); // TODO: da fare rosso
+      System.out
+          .println(AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " Non è presente nessuna luna con questo nome.");
       nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
     }
     Luna luna = sistemaStellare.getLunaByName(nomeLuna);
@@ -28,7 +29,8 @@ public class App {
   public static Pianeta cercaPianeta(SistemaStellare sistemaStellare) {
     String nomePianeta = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
     while (!sistemaStellare.pianetaEsistente(nomePianeta)) {
-      System.out.println("ERRORE! Non è presente nessun pianeta con questo nome."); // TODO: da fare rosso
+      System.out
+          .println(AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " Non è presente nessun pianeta con questo nome.");
       nomePianeta = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
     }
     Pianeta pianeta = sistemaStellare.getPianetaByName(nomePianeta);
@@ -41,7 +43,8 @@ public class App {
   public static CorpoCeleste cercaCorpoCeleste(SistemaStellare sistemaStellare) {
     String nome = InputData.readNonEmptyString("Inserisci nome di un corpo celeste: ", false);
     while (!sistemaStellare.corpoCelesteEsistente(nome)) {
-      System.out.println("ERRORE! Non è presente corpo celeste con questo nome."); // TODO: da fare rosso
+      System.out
+          .println(AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " Non è presente corpo celeste con questo nome.");
       nome = InputData.readNonEmptyString("Inserisci nome di un corpo celeste: ", false);
     }
     CorpoCeleste corpoCeleste = sistemaStellare.getCorpoCelesteByName(nome);
@@ -56,7 +59,8 @@ public class App {
   public static void aggiungiPianeta(SistemaStellare sistemaStellare) {
     String nome = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
     while (sistemaStellare.corpoCelesteEsistente(nome)) {
-      System.out.println("ERRORE! È già presente un corpo celeste con lo stesso nome."); // TODO: da fare rosso
+      System.out.println(
+          AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " È già presente un corpo celeste con lo stesso nome.");
       nome = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
     }
     double massa = InputData.readDoubleWithMinimum("Inserisci massa del pianeta: ", 0);
@@ -74,7 +78,8 @@ public class App {
   public static void aggiungiLuna(SistemaStellare sistemaStellare) {
     String nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
     while (sistemaStellare.corpoCelesteEsistente(nomeLuna)) {
-      System.out.println("ERRORE! È già presente un corpo celeste con lo stesso nome."); // TODO: da fare rosso
+      System.out.println(
+          AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " È già presente un corpo celeste con lo stesso nome.");
       nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
     }
     double massa = InputData.readDoubleWithMinimum("Inserisci massa della luna: ", 0);
@@ -93,7 +98,7 @@ public class App {
    */
   public static void rimuoviPianeta(SistemaStellare sistemaStellare) {
     Pianeta pianeta = cercaPianeta(sistemaStellare);
-    sistemaStellare.rimuoviPianeta(pianeta.getId()); // TODO: metodo con parametro di tipo Pianeta
+    sistemaStellare.rimuoviPianeta(pianeta);
   }
 
   /**
@@ -133,7 +138,8 @@ public class App {
   }
 
   /**
-   * Returns a string representation of the moons of a given planet in a star system.
+   * Returns a string representation of the moons of a given planet in a star
+   * system.
    *
    * @param sistemaStellare the star system containing the planet
    * @return a string representation of the moons of the planet
@@ -155,7 +161,8 @@ public class App {
   }
 
   /**
-   * Returns the calculated route between two celestial bodies in the given star system.
+   * Returns the calculated route between two celestial bodies in the given star
+   * system.
    *
    * @param sistemaStellare the star system containing the celestial bodies
    * @return the calculated route between the starting and ending celestial bodies
@@ -167,7 +174,8 @@ public class App {
   }
 
   /**
-   * Calculates and returns the distance between two celestial bodies in the given star system.
+   * Calculates and returns the distance between two celestial bodies in the given
+   * star system.
    *
    * @param sistemaStellare the star system containing the celestial bodies
    * @return the distance between the two celestial bodies
@@ -179,7 +187,8 @@ public class App {
   }
 
   /**
-   * Returns a string representation of the possible collisions in the given stellar system.
+   * Returns a string representation of the possible collisions in the given
+   * stellar system.
    *
    * @param sistemaStellare the stellar system to analyze
    * @return a string representation of the possible collisions
@@ -193,8 +202,7 @@ public class App {
    */
   public static void main(String[] args) {
     System.out.println(PrettyStrings.frame(
-        "BENVENUTO NEL PROGRAMMA PER CENSIRE UN SISTEMA SOLARE VOLUTO DAL CONSIGLIO INTERGALATTICO",
-        100, true, true));
+        "BENVENUTO NEL PROGRAMMA PER CENSIRE UN SISTEMA SOLARE VOLUTO DAL CONSIGLIO INTERGALATTICO", 100, true, true));
 
     // creiamo un sistema solare con la relativa stella
     System.out.println("Per iniziare è necessario inserire la stella del sistema solare: ");
@@ -203,22 +211,15 @@ public class App {
     Stella stella = new Stella(nomeStella, massaStella);
     SistemaStellare sistemaStellare = new SistemaStellare(stella);
 
-    // TODO: trasformalo in un enum
-    // TODO: possibili cose da aggiungere (ma anche no): modificare massa, posizione, nome di un corpo celeste
+    // TODO: possibili cose da aggiungere (ma anche no): modificare massa,
+    // posizione, nome di un corpo celeste
     String[] opzioniMenu = {
         "Aggiungi pianeta",
         "Aggiungi luna",
         "Rimuovi pianeta (e relative luna)",
-        "Rimuovi luna",
-        "Calcola centro di massa",
-        "Esiste corpo celeste con un certo nome",
-        "Pianeta di una luna",
-        "Lune che girano intorno ad un pianeta",
-        "Elenco corpi celesti",
-        "Percorso luna",
-        "Rotta tra due corpi celesti",
-        "Distanza tra due corpi celesti",
-        "Calcola possibili collisioni",
+        "Rimuovi luna", "Calcola centro di massa", "Esiste corpo celeste con un certo nome", "Pianeta di una luna",
+        "Lune che girano intorno ad un pianeta", "Elenco corpi celesti", "Percorso luna", "Rotta tra due corpi celesti",
+        "Distanza tra due corpi celesti", "Calcola possibili collisioni",
     };
     Menu menu = new Menu("SCEGLI UNA OPZIONE", opzioniMenu, true, true, false);
     int opzioneScelta;
@@ -226,7 +227,7 @@ public class App {
       opzioneScelta = menu.choose();
       switch (opzioneScelta) {
         // TODO: cambiare colore ai System.out.println
-        //TODO: da testare
+        // TODO: da testare bene
         case 1:
           // "Aggiungi pianeta"
           aggiungiPianeta(sistemaStellare);

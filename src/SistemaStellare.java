@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 
 /**
- * Represents a stellar system that contains a star and a list of planets.
- */
-/**
  * Represents a star system.
  */
 public class SistemaStellare {
@@ -99,9 +96,9 @@ public class SistemaStellare {
    * 
    * @param nomePianeta the name of the planet to be removed
    */
-  public void rimuoviPianeta(String nomePianeta) {
+  public void rimuoviPianeta(Pianeta pianeta) {
     for (int i = 0; i < listaPianeti.size(); i++) {
-      if (nomePianeta.equalsIgnoreCase(listaPianeti.get(i).getId())) {
+      if (pianeta.equals(listaPianeti.get(i))) {
         listaPianeti.remove(i);
         break;
       }
@@ -144,6 +141,7 @@ public class SistemaStellare {
    *
    * @return the stella object associated with this SistemaStellare
    */
+  // TODO: metodo mai utilizzato
   public Stella getStella() {
     return this.stella;
   };
@@ -153,6 +151,7 @@ public class SistemaStellare {
    * 
    * @param nuovaStella the new star to be set in the stellar system
    */
+  // TODO: metodo mai utilizzato
   public void replaceStella(Stella nuovaStella) {
     this.stella = nuovaStella;
   }
@@ -189,7 +188,6 @@ public class SistemaStellare {
     centroMassaX = posizioneXPesata / massaTotale;
     centroMassaY = posizioneYPesata / massaTotale;
 
-    // TODO: usare DecimalFormat: decimalFormat = new DecimalFormat("#.##");
     stringaReturn = String.format("Il centro di massa è in posizione: (%.2f; %.2f)", centroMassaX, centroMassaY);
 
     return stringaReturn;
@@ -212,13 +210,11 @@ public class SistemaStellare {
 
     return "{" +
         " stella='" + stella.getNome() + "'" +
-        ", listaPianeti='" + String.join(", ",
-            listaNomiPianeti)
+        ", listaPianeti='" + String.join(", ", listaNomiPianeti)
         + "'" +
         "}";
   }
 
-  // TODO: usare metodo calcolo rotta
   /**
    * Returns the path of the given moon within the star system.
    *
@@ -231,20 +227,6 @@ public class SistemaStellare {
     return this.stella.getNome() + " > " + this.getPianetaDiLuna(luna).getNome() + " > " + luna.getNome();
   }
 
-  /**
-   * Returns the planet that contains the given moon.
-   *
-   * @param _luna The moon to find the planet for.
-   * @return The planet that contains the given moon.
-   */
-  public Pianeta getPianetaDiLuna(CorpoCeleste _luna) {
-    Luna luna = (Luna) _luna; // TODO: modo migliore per farlo?
-    String nomePianeta = this.percorsoLuna(luna).split(" > ")[1];
-    return this.getPianetaByName(nomePianeta);
-  }
-
-  // TODO: upcasting possibile in qualche modo
-  //TODO: invertire uso con percorsoLuna
   /**
    * Returns the planet that contains the given moon.
    *
@@ -261,6 +243,11 @@ public class SistemaStellare {
     return pianeta;
   }
 
+  private Pianeta getPianetaDiLuna(CorpoCeleste _luna) {
+    Luna luna = (Luna) _luna;
+    return this.getPianetaDiLuna(luna);
+  }
+
   /**
    * Calculates the distance between two celestial bodies.
    * 
@@ -268,7 +255,6 @@ public class SistemaStellare {
    * @param corpo2 the second celestial body
    * @return the distance between the two celestial bodies
    */
-  // TODO: to test
   public double calcolaDistanza(CorpoCeleste corpo1, CorpoCeleste corpo2) {
     double deltaX = corpo1.getPosizione().get("x") - corpo2.getPosizione().get("x");
     double deltaY = corpo1.getPosizione().get("y") - corpo2.getPosizione().get("y");
@@ -287,7 +273,7 @@ public class SistemaStellare {
    * @return A string representation of the route between the two celestial
    *         bodies, including the total distance.
    */
-  // TODO: eventualmente da migliorare con altre metodi di supporto
+  //TODO: partenza e arrivo è inutile riscriverli tutte le volte
   public String calcolaRotta(CorpoCeleste partenza, CorpoCeleste arrivo) {
     ArrayList<CorpoCeleste> listaPercorso = new ArrayList<CorpoCeleste>();
     double distanzaTotale = 0;
@@ -320,10 +306,16 @@ public class SistemaStellare {
       }
     } else if (partenza instanceof Luna) {
       if (arrivo instanceof Pianeta) {
-        listaPercorso.add(partenza);
-        listaPercorso.add(this.getPianetaDiLuna(partenza));
-        listaPercorso.add(this.stella);
-        listaPercorso.add(arrivo);
+        if (arrivo.equals(this.getPianetaDiLuna(partenza))) {
+          listaPercorso.add(partenza);
+          listaPercorso.add(arrivo);
+        } else {
+          // se la luna appartiene ad un pianeta che non è quello di arrivo
+          listaPercorso.add(partenza);
+          listaPercorso.add(this.getPianetaDiLuna(partenza));
+          listaPercorso.add(this.stella);
+          listaPercorso.add(arrivo);
+        }
       } else {
         // se arrivo è una stella
         listaPercorso.add(partenza);
@@ -331,15 +323,17 @@ public class SistemaStellare {
         listaPercorso.add(this.stella);
       }
     } else if (partenza instanceof Pianeta) {
-      if (arrivo instanceof Luna && partenza.equals(arrivo)) {
-        listaPercorso.add(partenza);
-        listaPercorso.add(this.getPianetaDiLuna(partenza));
-        listaPercorso.add(arrivo);
-      } else if (arrivo instanceof Luna) {
-        listaPercorso.add(partenza);
-        listaPercorso.add(this.stella);
-        listaPercorso.add(this.getPianetaDiLuna(arrivo));
-        listaPercorso.add(arrivo);
+      if (arrivo instanceof Luna) {
+        if (partenza.equals(this.getPianetaDiLuna(arrivo))) {
+          listaPercorso.add(partenza);
+          listaPercorso.add(arrivo);
+        } else {
+          // se la luna appartiene ad un pianeta che non è quello di arrivo
+          listaPercorso.add(partenza);
+          listaPercorso.add(this.stella);
+          listaPercorso.add(this.getPianetaDiLuna(arrivo));
+          listaPercorso.add(arrivo);
+        }
       } else {
         // se arrivo è una stella
         listaPercorso.add(partenza);
@@ -368,8 +362,7 @@ public class SistemaStellare {
       distanzaTotale += this.calcolaDistanza(listaPercorso.get(i), listaPercorso.get(i + 1));
     }
 
-    return String.format(
-        "Percorso: %s, con distanza di: %.2f", String.join(" > ", listaNomi), distanzaTotale);
+    return String.format("Percorso: %s, con distanza di: %.2f", String.join(" > ", listaNomi), distanzaTotale);
   }
 
   /**
