@@ -1,90 +1,112 @@
 import it.kibo.fp.lib.*;
 
-//TODO: traduzione commenti
-//TODO: trasformare stringhe in costanti
 //TODO: controlare che ci siano tutte le richieste della consegna
 /**
- * The main class of the Planetarium application.
- * This class provides various methods for interacting with a stellar system.
+ * La classe principale dell'applicazione del planetario.
+ * Questa classe fornisce vari metodi per interagire con un sistema stellare.
  */
 public class App {
 
+  private static final String SCEGLI_OPZIONE = "SCEGLI UNA OPZIONE";
+  private static final String VALORE_DISTANZA = "> La distanza vale %.2f";
+  private static final String PIANETA_LUNA_CERCATA = "> Il pianeta della luna cercata è: ";
+  private static final String LUNA_ELIMINATA = "> Luna eliminata definitivamente. o7";
+  private static final String PIANETA_ELIMINATO = "> Pianeta eliminato definitivamente. o7";
+  private static final String LUNA_AGGIUNTA_CORRETTAMENTE = "> Luna aggiunta correttamente.";
+  private static final String PIANETA_AGGIUNTO_CORRETTAMENTE = "> Pianeta aggiunto correttamente.";
+  private static final String INSERISCI_MASSA_STELLA = "Inserisci massa della stella: ";
+  private static final String INSERISCI_NOME_STELLA = "Inserisci il nome della stella: ";
+  private static final String CREAZIONE_STELLA = "Per iniziare è necessario inserire la stella del sistema solare: ";
+  private static final String BENVENUTO = "BENVENUTO NEL PROGRAMMA PER CENSIRE UN SISTEMA SOLARE VOLUTO DAL CONSIGLIO INTERGALATTICO";
+  private static final String CORPO_CELESTE_NON_ESISTE = "> Corpo celeste non esiste";
+  private static final String CORPO_CELESTE_ESISTE = "> Corpo celeste esiste";
+  private static final String INSERISCI_NOME_CORPO_CELESTI_RICERCATO = "Inserisci nome corpo celesti che ricerchi: ";
+  private static final String INSERISCI_ORDINATA_POSIZIONE_LUNA = "Inserisci ordinata posizione luna: ";
+  private static final String INSERISCI_ASCISSA_POSIZIONE_LUNA = "Inserisci ascissa posizione luna: ";
+  private static final String INSERISCI_MASSA_LUNA = "Inserisci massa della luna: ";
+  private static final String INSERISCI_ORDINATA_POSIZIONE_PIANETA = "Inserisci ordinata posizione pianeta: ";
+  private static final String INSERISCI_ASCISSA_POSIZIONE_PIANETA = "Inserisci ascissa posizione pianeta: ";
+  private static final String INSERISCI_MASSA_PIANETA = "Inserisci massa del pianeta: ";
+  private static final String ERRORE_CORPO_CELESTE_GIA_ESISTENTE = AnsiColors.RED + "ERRORE!" + AnsiColors.RESET
+      + " È già presente un corpo celeste con lo stesso nome.";
+  private static final String ERRORE_CORPO_CELESTE_NON_TROVATO = AnsiColors.RED + "ERRO RE!" + AnsiColors.RESET
+      + " Non è presente corpo celeste con questo nome.";
+  private static final String INSERISCI_NOME_CORPO_CELESTE = "Inserisci nome di un corpo celeste: ";
+  private static final String ERRORE_PIANETA_NON_TROVATO = AnsiColors.RED + "ERRORE!" + AnsiColors.RESET
+      + " Non è presente nessun pianeta con questo nome.";
+  private static final String INSERISCI_NOME_PIANETA = "Inserisci nome del pianeta: ";
+  private static final String ERRORE_LUNA_NON_TROVATA = AnsiColors.RED + "ERRORE!" + AnsiColors.RESET
+      + " Non è presente nessuna luna con questo nome.";
+  private static final String INSERISCI_NOME_LUNA = "Inserisci nome della luna: ";
+
   /**
-   * Represents a moon in a star system.
+   * Cerca una luna da linea di comando.
    */
   public static Luna cercaLuna(SistemaStellare sistemaStellare) {
-    String nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
+    String nomeLuna = InputData.readNonEmptyString(INSERISCI_NOME_LUNA, false);
     while (!sistemaStellare.lunaEsistente(nomeLuna)) {
-      System.out
-          .println(AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " Non è presente nessuna luna con questo nome.");
-      nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
+      System.out.println(ERRORE_LUNA_NON_TROVATA);
+      nomeLuna = InputData.readNonEmptyString(INSERISCI_NOME_LUNA, false);
     }
     Luna luna = sistemaStellare.getLunaByName(nomeLuna);
     return luna;
   }
 
   /**
-   * Represents a planet in a star system.
+   * Cerca un pianeta da linea di comando.
    */
   public static Pianeta cercaPianeta(SistemaStellare sistemaStellare) {
-    String nomePianeta = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
+    String nomePianeta = InputData.readNonEmptyString(INSERISCI_NOME_PIANETA, false);
     while (!sistemaStellare.pianetaEsistente(nomePianeta)) {
-      System.out
-          .println(AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " Non è presente nessun pianeta con questo nome.");
-      nomePianeta = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
+      System.out.println(ERRORE_PIANETA_NON_TROVATO);
+      nomePianeta = InputData.readNonEmptyString(INSERISCI_NOME_PIANETA, false);
     }
     Pianeta pianeta = sistemaStellare.getPianetaByName(nomePianeta);
     return pianeta;
   }
 
   /**
-   * Represents a celestial body in the star system.
+   * Cerca un corpo celeste qualsiasi da linea di comando.
    */
   public static CorpoCeleste cercaCorpoCeleste(SistemaStellare sistemaStellare) {
-    String nome = InputData.readNonEmptyString("Inserisci nome di un corpo celeste: ", false);
+    String nome = InputData.readNonEmptyString(INSERISCI_NOME_CORPO_CELESTE, false);
     while (!sistemaStellare.corpoCelesteEsistente(nome)) {
-      System.out
-          .println(AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " Non è presente corpo celeste con questo nome.");
-      nome = InputData.readNonEmptyString("Inserisci nome di un corpo celeste: ", false);
+      System.out.println(ERRORE_CORPO_CELESTE_NON_TROVATO);
+      nome = InputData.readNonEmptyString(INSERISCI_NOME_CORPO_CELESTE, false);
     }
     CorpoCeleste corpoCeleste = sistemaStellare.getCorpoCelesteByName(nome);
     return corpoCeleste;
   }
 
   /**
-   * Adds a new planet to the given stellar system.
-   *
-   * @param sistemaStellare the stellar system to which the planet will be added
+   * Aggiunge un nuovo pianeta al sistema stellare dato.
    */
   public static void aggiungiPianeta(SistemaStellare sistemaStellare) {
-    String nome = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
+    String nome = InputData.readNonEmptyString(INSERISCI_NOME_PIANETA, false);
     while (sistemaStellare.corpoCelesteEsistente(nome)) {
-      System.out.println(
-          AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " È già presente un corpo celeste con lo stesso nome.");
-      nome = InputData.readNonEmptyString("Inserisci nome del pianeta: ", false);
+      System.out.println(ERRORE_CORPO_CELESTE_GIA_ESISTENTE);
+      nome = InputData.readNonEmptyString(INSERISCI_NOME_PIANETA, false);
     }
-    double massa = InputData.readDoubleWithMinimum("Inserisci massa del pianeta: ", 0);
-    double posizioneX = InputData.readDouble("Inserisci ascissa posizione pianeta: ");
-    double posizioneY = InputData.readDouble("Inserisci ordinata posizione pianeta: ");
+    double massa = InputData.readDoubleWithMinimum(INSERISCI_MASSA_PIANETA, 0);
+    double posizioneX = InputData.readDouble(INSERISCI_ASCISSA_POSIZIONE_PIANETA);
+    double posizioneY = InputData.readDouble(INSERISCI_ORDINATA_POSIZIONE_PIANETA);
     Pianeta pianeta = new Pianeta(nome, massa, posizioneX, posizioneY);
     sistemaStellare.addPianeta(pianeta);
   };
 
   /**
-   * Adds a new moon to the given stellar system.
-   * 
-   * @param sistemaStellare the stellar system to add the moon to
+   * Aggiunge una luna nuova al sistema stellare dato.
    */
   public static void aggiungiLuna(SistemaStellare sistemaStellare) {
-    String nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
+    String nomeLuna = InputData.readNonEmptyString(INSERISCI_NOME_LUNA, false);
     while (sistemaStellare.corpoCelesteEsistente(nomeLuna)) {
       System.out.println(
-          AnsiColors.RED + "ERRORE!" + AnsiColors.RESET + " È già presente un corpo celeste con lo stesso nome.");
-      nomeLuna = InputData.readNonEmptyString("Inserisci nome della luna: ", false);
+          ERRORE_CORPO_CELESTE_GIA_ESISTENTE);
+      nomeLuna = InputData.readNonEmptyString(INSERISCI_NOME_LUNA, false);
     }
-    double massa = InputData.readDoubleWithMinimum("Inserisci massa della luna: ", 0);
-    double posizioneX = InputData.readDouble("Inserisci ascissa posizione luna: ");
-    double posizioneY = InputData.readDouble("Inserisci ordinata posizione luna: ");
+    double massa = InputData.readDoubleWithMinimum(INSERISCI_MASSA_LUNA, 0);
+    double posizioneX = InputData.readDouble(INSERISCI_ASCISSA_POSIZIONE_LUNA);
+    double posizioneY = InputData.readDouble(INSERISCI_ORDINATA_POSIZIONE_LUNA);
     Luna luna = new Luna(nomeLuna, massa, posizioneX, posizioneY);
 
     Pianeta pianeta = cercaPianeta(sistemaStellare);
@@ -92,9 +114,7 @@ public class App {
   };
 
   /**
-   * Removes a planet from the given stellar system.
-   *
-   * @param sistemaStellare the stellar system from which to remove the planet
+   * Rimuove un pianeta dal sistema stellare dato.
    */
   public static void rimuoviPianeta(SistemaStellare sistemaStellare) {
     Pianeta pianeta = cercaPianeta(sistemaStellare);
@@ -102,7 +122,7 @@ public class App {
   }
 
   /**
-   * Represents a planet in a star system.
+   * Visualizza il pianeta di una linea.
    */
   public static Pianeta cercaPianetaDiLuna(SistemaStellare sistemaStellare) {
     Luna luna = cercaLuna(sistemaStellare);
@@ -111,9 +131,7 @@ public class App {
   }
 
   /**
-   * Removes a moon from the given stellar system.
-   * 
-   * @param sistemaStellare the stellar system from which to remove the moon
+   * Rimuove una luna dal sistema stellare dato.
    */
   public static void rimuoviLuna(SistemaStellare sistemaStellare) {
     Luna luna = cercaLuna(sistemaStellare);
@@ -122,27 +140,20 @@ public class App {
   }
 
   /**
-   * Checks if a celestial body exists in the given stellar system.
-   * 
-   * @param sistemaStellare The stellar system to search in.
-   * @return A message indicating whether the celestial body exists or not.
+   * Verifica se esiste un corpo celeste nel sistema stellare dato.
    */
   public static String corpoCelesteEsistente(SistemaStellare sistemaStellare) {
-    String nome = InputData.readNonEmptyString("Inserisci nome corpo celesti che ricerchi: ", false);
+    String nome = InputData.readNonEmptyString(INSERISCI_NOME_CORPO_CELESTI_RICERCATO, false);
     boolean presente = sistemaStellare.corpoCelesteEsistente(nome);
     if (presente) {
-      return "> Corpo celeste esiste";
+      return CORPO_CELESTE_ESISTE;
     } else {
-      return "> Corpo celeste non esiste";
+      return CORPO_CELESTE_NON_ESISTE;
     }
   }
 
   /**
-   * Returns a string representation of the moons of a given planet in a star
-   * system.
-   *
-   * @param sistemaStellare the star system containing the planet
-   * @return a string representation of the moons of the planet
+   * Visualizza tutte le luna di un pianeta.
    */
   public static String visualizzaLuneDiPianeta(SistemaStellare sistemaStellare) {
     Pianeta pianeta = cercaPianeta(sistemaStellare);
@@ -150,10 +161,7 @@ public class App {
   }
 
   /**
-   * Returns the path to the moon in the given star system.
-   *
-   * @param sistemaStellare the star system to search for the moon in
-   * @return the path to the moon
+   * Restituisce il percorso verso la luna nel sistema stellare dato.
    */
   public static String visualizzaPercorsoLuna(SistemaStellare sistemaStellare) {
     Luna luna = cercaLuna(sistemaStellare);
@@ -161,11 +169,8 @@ public class App {
   }
 
   /**
-   * Returns the calculated route between two celestial bodies in the given star
-   * system.
-   *
-   * @param sistemaStellare the star system containing the celestial bodies
-   * @return the calculated route between the starting and ending celestial bodies
+   * Restituisce il percorso calcolato tra due corpi celesti e la distanza totale
+   * percorsa
    */
   public static String visualizzaRotta(SistemaStellare sistemaStellare) {
     CorpoCeleste partenza = cercaCorpoCeleste(sistemaStellare);
@@ -174,11 +179,7 @@ public class App {
   }
 
   /**
-   * Calculates and returns the distance between two celestial bodies in the given
-   * star system.
-   *
-   * @param sistemaStellare the star system containing the celestial bodies
-   * @return the distance between the two celestial bodies
+   * Calcola e restituisce la distanza tra due corpi celesti
    */
   public static double visualizzaDistanza(SistemaStellare sistemaStellare) {
     CorpoCeleste corpo1 = cercaCorpoCeleste(sistemaStellare);
@@ -187,27 +188,23 @@ public class App {
   }
 
   /**
-   * Returns a string representation of the possible collisions in the given
-   * stellar system.
-   *
-   * @param sistemaStellare the stellar system to analyze
-   * @return a string representation of the possible collisions
+   * Restituisce una rappresentazione di stringa delle possibili collisioni
    */
   public static String visualizzaCollisioni(SistemaStellare sistemaStellare) {
     return sistemaStellare.getPossibiliCollisioni();
   }
 
   /**
-   * The main method is the entry point of the program.
+   * Il metodo principale è il punto di ingresso del programma.
    */
   public static void main(String[] args) {
     System.out.println(PrettyStrings.frame(
-        "BENVENUTO NEL PROGRAMMA PER CENSIRE UN SISTEMA SOLARE VOLUTO DAL CONSIGLIO INTERGALATTICO", 100, true, true));
+        BENVENUTO, 100, true, true));
 
     // creiamo un sistema solare con la relativa stella
-    System.out.println("Per iniziare è necessario inserire la stella del sistema solare: ");
-    String nomeStella = InputData.readNonEmptyString("Inserisci il nome della stella: ", false);
-    double massaStella = InputData.readDoubleWithMinimum("Inserisci massa della stella: ", 0);
+    System.out.println(CREAZIONE_STELLA);
+    String nomeStella = InputData.readNonEmptyString(INSERISCI_NOME_STELLA, false);
+    double massaStella = InputData.readDoubleWithMinimum(INSERISCI_MASSA_STELLA, 0);
     Stella stella = new Stella(nomeStella, massaStella);
     SistemaStellare sistemaStellare = new SistemaStellare(stella);
 
@@ -217,11 +214,18 @@ public class App {
         "Aggiungi pianeta",
         "Aggiungi luna",
         "Rimuovi pianeta (e relative luna)",
-        "Rimuovi luna", "Calcola centro di massa", "Esiste corpo celeste con un certo nome", "Pianeta di una luna",
-        "Lune che girano intorno ad un pianeta", "Elenco corpi celesti", "Percorso luna", "Rotta tra due corpi celesti",
-        "Distanza tra due corpi celesti", "Calcola possibili collisioni",
+        "Rimuovi luna",
+        "Calcola centro di massa",
+        "Esiste corpo celeste con un certo nome",
+        "Pianeta di una luna",
+        "Lune che girano intorno ad un pianeta",
+        "Elenco corpi celesti",
+        "Percorso luna",
+        "Rotta tra due corpi celesti",
+        "Distanza tra due corpi celesti",
+        "Calcola possibili collisioni",
     };
-    Menu menu = new Menu("SCEGLI UNA OPZIONE", opzioniMenu, true, true, false);
+    Menu menu = new Menu(SCEGLI_OPZIONE, opzioniMenu, true, true, false);
     int opzioneScelta;
     do {
       opzioneScelta = menu.choose();
@@ -231,22 +235,22 @@ public class App {
         case 1:
           // "Aggiungi pianeta"
           aggiungiPianeta(sistemaStellare);
-          System.out.println("> Pianeta aggiunto correttamente.");
+          System.out.println(PIANETA_AGGIUNTO_CORRETTAMENTE);
           break;
         case 2:
           // "Aggiungi luna"
           aggiungiLuna(sistemaStellare);
-          System.out.println("> Luna aggiunta correttamente.");
+          System.out.println(LUNA_AGGIUNTA_CORRETTAMENTE);
           break;
         case 3:
           // "Rimuovi pianeta (e relative luna)"
           rimuoviPianeta(sistemaStellare);
-          System.out.println("> Pianeta eliminato definitivamente. o7");
+          System.out.println(PIANETA_ELIMINATO);
           break;
         case 4:
           // "Rimuovi luna"
           rimuoviLuna(sistemaStellare);
-          System.out.println("> Luna eliminato definitivamente. o7");
+          System.out.println(LUNA_ELIMINATA);
           break;
         case 5:
           // "Calcola centro di massa"
@@ -259,7 +263,7 @@ public class App {
         case 7:
           // "Pianeta di una luna"
           Pianeta pianeta = cercaPianetaDiLuna(sistemaStellare);
-          System.out.println("> Il pianeta della luna cercata è: " + pianeta.getNome());
+          System.out.println(PIANETA_LUNA_CERCATA + pianeta.getNome());
           break;
         case 8:
           // "Lune che girano intorno ad un pianeta"
@@ -279,7 +283,7 @@ public class App {
           break;
         case 12:
           // "Distanza tra due corpi celesti"
-          System.out.println(String.format("> La distanza vale %.2f", visualizzaDistanza(sistemaStellare)));
+          System.out.println(String.format(VALORE_DISTANZA, visualizzaDistanza(sistemaStellare)));
           break;
         case 13:
           // "Calcola possibili collisioni"

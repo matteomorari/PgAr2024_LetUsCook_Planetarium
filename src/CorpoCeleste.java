@@ -1,9 +1,9 @@
 import java.util.HashMap;
 
 /**
- * The CorpoCeleste class represents a celestial body.
- * It contains information about the name, mass, and position of the celestial
- * body.
+ * La classe Corpoceleste rappresenta un corpo celeste.
+ * Contiene informazioni sul nome, sulla massa e sulla posizione del corpo
+ * celeste.
  */
 public class CorpoCeleste {
 
@@ -14,12 +14,13 @@ public class CorpoCeleste {
   private HashMap<String, Double> posizione = new HashMap<String, Double>();
 
   /**
-   * Constructs a CorpoCeleste object with the specified name, mass, and position.
-   * 
-   * @param nome       The name of the celestial body.
-   * @param massa      The mass of the celestial body.
-   * @param posizioneX The x-coordinate of the celestial body's position.
-   * @param posizioneY The y-coordinate of the celestial body's position.
+   * Costruttore di un oggetto Corpoceleste con il nome, la massa e la posizione
+   * specificati.
+   *
+   * @param nome       Il nome del corpo celeste.
+   * @param Massa      la massa del corpo celeste.
+   * @param posizioneX la coordinata X della posizione del corpo celeste.
+   * @param posizioneY la coordinata Y della posizione del corpo celeste.
    */
   public CorpoCeleste(String nome, double massa, double posizioneX, double posizioneY) {
     this.nome = nome;
@@ -30,46 +31,46 @@ public class CorpoCeleste {
   }
 
   /**
-   * Returns the name of the celestial body.
-   * 
-   * @return The name of the celestial body.
+   * Restituisce il nome del corpo celeste.
+   *
+   * @return il nome del corpo celeste.
    */
   public String getNome() {
     return nome;
   }
 
   /**
-   * Sets the name of the celestial body.
-   * 
-   * @param nome The name of the celestial body.
+   * Imposta il nome del corpo celeste.
+   *
+   * @param nome Il nome del corpo celeste.
    */
   public void setNome(String nome) {
     this.nome = nome;
   }
 
   /**
-   * Returns the mass of the celestial body.
-   * 
-   * @return The mass of the celestial body.
+   * Restituisce la massa del corpo celeste.
+   *
+   * @return la massa del corpo celeste.
    */
   public double getMassa() {
     return massa;
   }
 
   /**
-   * Sets the mass of the celestial body.
-   * 
-   * @param massa The mass of the celestial body.
+   * Imposta la massa del corpo celeste.
+   *
+   * @param Massa la massa del corpo celeste.
    */
   public void setMassa(double massa) {
     this.massa = massa;
   }
 
   /**
-   * Sets the position of the celestial body.
-   * 
-   * @param x The x-coordinate of the celestial body's position.
-   * @param y The y-coordinate of the celestial body's position.
+   * Imposta la posizione del corpo celeste.
+   *
+   * @param x la coordinata X della posizione del corpo celeste.
+   * @param y la coordinata Y della posizione del corpo celeste.
    */
   public void setPosizione(double x, double y) {
     this.posizione.put("x", x);
@@ -77,18 +78,18 @@ public class CorpoCeleste {
   }
 
   /**
-   * Returns the position of the celestial body.
-   * 
-   * @return The position of the celestial body.
+   * Restituisce la posizione del corpo celeste.
+   *
+   * @return la posizione del corpo celeste.
    */
   public HashMap<String, Double> getPosizione() {
     return posizione;
   }
 
   /**
-   * Returns the unique identifier of the celestial body.
-   * 
-   * @return The unique identifier of the celestial body.
+   * Restituisce l'identificatore unico del corpo celeste.
+   *
+   * @return l'identificatore univoco del corpo celeste.
    */
   public String getId() {
     return this.id;

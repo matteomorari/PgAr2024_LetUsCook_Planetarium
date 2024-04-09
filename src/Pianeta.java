@@ -1,37 +1,37 @@
 import java.util.ArrayList;
 
 /**
- * Represents a planet in the solar system.
- * Extends the CorpoCeleste class.
+ * Rappresenta un pianeta nel sistema solare.
+ * Estende la classe CorpoCeleste.
  */
 public class Pianeta extends CorpoCeleste {
   private ArrayList<Luna> listaLune = new ArrayList<Luna>();
 
   /**
-   * Constructs a new Pianeta object with the specified parameters.
-   * 
-   * @param nome   the name of the planet
-   * @param massa  the mass of the planet
-   * @param pos_x  the x-coordinate of the planet's position
-   * @param pos_y  the y-coordinate of the planet's position
+   * Costruttore di un nuovo oggetto Pianeta con i parametri specificati.
+   *
+   * @param nome  il nome del pianeta
+   * @param Massa la massa del pianeta
+   * @param pos_x la coordinata X della posizione del pianeta
+   * @param pos_y la coordinata Y della posizione del pianeta
    */
   public Pianeta(String nome, double massa, double pos_x, double pos_y) {
     super(nome, massa, pos_x, pos_y);
   }
 
   /**
-   * Adds a Luna object to the list of moons orbiting the planet.
-   * 
-   * @param luna  the Luna object to be added
+   * Aggiunge un oggetto Luna all'elenco delle lune orbitanti nel pianeta.
+   *
+   * @param Luna l'oggetto Luna da aggiungere
    */
   public void addLuna(Luna luna) {
     listaLune.add(luna);
   }
 
   /**
-   * Removes a Luna object from the list of moons orbiting the planet.
-   * 
-   * @param luna  the Luna object to be removed
+   * Rimuove un oggetto Luna dall'elenco delle lune orbitanti al pianeta.
+   *
+   * @param Luna L'oggetto Luna da rimuovere
    */
   public void rimuoviLuna(Luna luna) {
     for (int i = 0; i < listaLune.size(); i++) {
@@ -43,18 +43,19 @@ public class Pianeta extends CorpoCeleste {
   }
 
   /**
-   * Returns the list of moons orbiting the planet.
-   * 
-   * @return the list of moons
+   * Restituisce l'elenco di lune orbitanti al pianeta.
+   *
+   * @return l'elenco delle lune
    */
   public ArrayList<Luna> getListaLune() {
     return listaLune;
   }
 
   /**
-   * Returns a string representation of the names of the moons orbiting the planet.
-   * 
-   * @return a string representation of the moon names
+   * Restituisce una rappresentazione di stringa dei nomi delle lune orbitanti
+   * pianeta.
+   *
+   * @return Una rappresentazione di stringa dei nomi della luna
    */
   public String getStringaListaLune() {
     ArrayList<String> listaNomiLune = new ArrayList<String>();
@@ -66,10 +67,10 @@ public class Pianeta extends CorpoCeleste {
   }
 
   /**
-   * Returns a string representation of the planet.
-   * If the planet has moons, the string includes the names of the moons.
-   * 
-   * @return a string representation of the planet
+   * Restituisce una rappresentazione di stringa del pianeta.
+   * Se il pianeta ha lune, la stringa include i nomi delle lune.
+   *
+   * @return Una rappresentazione di stringa del pianeta
    */
   @Override
   public String toString() {

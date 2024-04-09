@@ -1,13 +1,13 @@
 /**
- * Represents a star in the celestial system.
- * Extends the CorpoCeleste class.
+ * Rappresenta una stella nel sistema celeste.
+ * Estende la classe CorpoCeleste.
  */
 public class Stella extends CorpoCeleste {
 	/**
-	 * Constructs a new Stella object with the specified name and mass.
-	 * 
-	 * @param nome  The name of the star.
-	 * @param massa The mass of the star.
+	 * Costruttore di un nuovo oggetto Stella con il nome e la massa specificati.
+	 *
+	 * @param nome  il nome della stella.
+	 * @param Massa la massa della stella.
 	 */
 	public Stella(String nome, double massa) {
 		super(nome, massa, 0, 0);
