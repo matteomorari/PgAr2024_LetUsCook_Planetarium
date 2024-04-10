@@ -140,7 +140,7 @@ public class App {
    */
   public static void rimuoviLuna(SistemaStellare sistemaStellare) {
     Luna luna = cercaLuna(sistemaStellare);
-    Pianeta pianeta = cercaPianetaDiLuna(sistemaStellare);
+    Pianeta pianeta = sistemaStellare.getPianetaDiLuna(luna);
     pianeta.rimuoviLuna(luna);
   }
 
@@ -162,7 +162,7 @@ public class App {
    */
   public static String visualizzaLuneDiPianeta(SistemaStellare sistemaStellare) {
     Pianeta pianeta = cercaPianeta(sistemaStellare);
-    return "> " + pianeta.getStringaListaLune();
+    return AnsiColors.GREEN + "> " + pianeta.getStringaListaLune() + AnsiColors.RESET;
   }
 
   /**
